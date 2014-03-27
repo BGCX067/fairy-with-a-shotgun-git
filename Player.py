@@ -47,6 +47,8 @@ class Player(pygame.sprite.Sprite):
         self.radius = self.rect.width/2
         self.living = True
         self.place(pos)
+        self.money = 0
+        
         
     def place(self, pos):
         self.rect.center = pos
@@ -117,6 +119,11 @@ class Player(pygame.sprite.Sprite):
             self.speedy = 0
         elif self.rect.bottom > size[1] and self.headingy == "down":
             self.speedy = 0
+    
+        def collideMoney(self, money):
+            self.money += money.value
+    
+    
     
     def collideBlock(self, block):
         print self.rect, self.headingx, self.headingy

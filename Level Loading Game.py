@@ -7,6 +7,8 @@ from Player import Player
 from HardBlock import HardBlock
 from Enemy import Enemy
 from Background import Background
+from Money import Money
+from HUD import CounterDisplay
 
 clock = pygame.time.Clock()
 
@@ -14,8 +16,8 @@ width = 800
 height = 600
 size = width, height
 
-blocksize = [50,50]
-playersize = [40,40]
+blocksize = [10,10]
+playersize = [8,8]
 
 screen = pygame.display.set_mode(size)
 bgColor = r,g,b = 0,0,0
@@ -26,13 +28,16 @@ enemies = pygame.sprite.Group()
 backgrounds = pygame.sprite.Group()
 players = pygame.sprite.Group()
 all = pygame.sprite.OrderedUpdates()
+moneys = pygame.sprite.Group()
+HUDs = pygame.sprite.Group()
 
 Player.containers = (all, players)
 Block.containers = (all, blocks)
 HardBlock.containers = (all, hardBlocks, blocks)
 Enemy.containers = (all, enemies)
 Background.containers = (all, blocks)
-
+Money.containers = (all, moneys)
+CounterDisplay.containers = (all, HUDs)
 
 bg = Background("rsc/bg/mainbg.png", size)
 
@@ -53,24 +58,27 @@ def loadLevel(level):
     for line in newlines:
         print line
     
+    playerpos = [0,0]
     for y, line in enumerate(newlines):
         for x, c in enumerate(line):
+            if c == "@":
+                playerpos = [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2]
             if c == "#":
                 HardBlock("rsc/blocks/black.png", 
                       [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
                       blocksize)
-            elif c == "p":
-                Block("rsc/blocks/purple.png", 
+            elif c == "$":
+                Money(5, 
                       [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
                       blocksize)
-            elif c == "b":
-                Block("rsc/blocks/blue.png", 
+            elif c == "=":
+                HardBlock("rsc/blocks/blue.png", 
                       [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
                       blocksize)
     
-    f = open(level+".tng", 'r')
-    lines = f.readlines()
-    f.close()
+    #f = open(level+".tng", 'r')
+    #lines = f.readlines()
+    #f.close()
     
     newlines = []
     
@@ -100,8 +108,7 @@ def loadLevel(level):
     
 
 levels = ["rsc/levels/level1",
-          "rsc/levels/level2",
-          "rsc/levels/level3"]
+          "rsc/levels/level2"]
 level = 0
 loadLevel(levels[level])
 player1 = players.sprites()[0]
@@ -144,6 +151,7 @@ while True:
     playersHitBlocks = pygame.sprite.groupcollide(players, hardBlocks, False, False)
     enemiesHitBlocks = pygame.sprite.groupcollide(enemies, hardBlocks, False, False)
     enemiesHitEnemies = pygame.sprite.groupcollide(enemies, enemies, False, False)
+    playersHitMoney = pygame.sprite.groupcollide(players, moneys, False, True)
     
     for player in playersHitBlocks:
         for block in playersHitBlocks[player]:
@@ -156,6 +164,12 @@ while True:
     for enemy in enemiesHitEnemies:
         for otherEnemy in enemiesHitEnemies[enemy]:
             enemy.collideBlock(otherEnemy)
+    
+    for player in playersHitMoney:
+        for money in playersHitMoney[player]:
+            player.collideMoney(money)
+            moneycounter.updateValue(player.money)
+    
     
     all.update(size,
                player1.speedx, 
