@@ -12,7 +12,8 @@ class CounterDisplay(pygame.sprite.Sprite):
     def place(self, pos):
         self.rect.center = pos
         
-    def update(self, size):
+    def update(*args):
+        self = args[0]
         self.image = self.font.render(str(self.value), 1, (255, 255, 255))
         self.rect = self.image.get_rect(center = self.rect.center)
     

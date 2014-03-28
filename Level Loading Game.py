@@ -112,6 +112,7 @@ levels = ["rsc/levels/level1",
 level = 0
 loadLevel(levels[level])
 player1 = players.sprites()[0]
+moneycounter = CounterDisplay(player1.money, (20,height - 10))
 
 while True:
     for event in pygame.event.get():
@@ -123,12 +124,17 @@ while True:
                     level += 1
                 else:
                     level = 0
+                    
+                pm = player1.money
+                    
                 for each in all.sprites():
                     each.kill()
                 bg = Background("rsc/bg/mainbg.png", size)
                 screen.blit(bg.image, bg.rect)
                 loadLevel(levels[level])
                 player1 = players.sprites()[0]
+                player1.money = pm
+                moneycounter = CounterDisplay(player1.money, (20,height - 10))
 
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 player1.direction("right")

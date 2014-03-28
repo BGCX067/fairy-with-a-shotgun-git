@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.waitCountMax = 5
         self.image = self.images[self.frame]
         self.rect = self.image.get_rect()
-        self.maxSpeed = blocksize[0]/10.0
+        self.maxSpeed = blocksize[0]/5.0
         self.speed = [0,0]
         self.speedx = 0
         self.speedy = 0
@@ -120,8 +120,8 @@ class Player(pygame.sprite.Sprite):
         elif self.rect.bottom > size[1] and self.headingy == "down":
             self.speedy = 0
     
-        def collideMoney(self, money):
-            self.money += money.value
+    def collideMoney(self, money):
+        self.money += money.value
     
     
     
