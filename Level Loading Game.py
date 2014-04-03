@@ -12,8 +12,8 @@ from HUD import CounterDisplay
 
 clock = pygame.time.Clock()
 
-width = 1000
-height = 800
+width = 800
+height = 600
 size = width, height
 
 blocksize = [50,50]
