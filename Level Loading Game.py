@@ -16,8 +16,8 @@ width = 1000
 height = 800
 size = width, height
 
-blocksize = [75,75]
-playersize = [50,50]
+blocksize = [50,50]
+playersize = [75,75]
 
 screen = pygame.display.set_mode(size)
 bgColor = r,g,b = 0,0,0
