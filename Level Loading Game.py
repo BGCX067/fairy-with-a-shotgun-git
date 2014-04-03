@@ -12,12 +12,12 @@ from HUD import CounterDisplay
 
 clock = pygame.time.Clock()
 
-width = 800
-height = 600
+width = 1000
+height = 800
 size = width, height
 
-blocksize = [50,50]
-playersize = [25,25]
+blocksize = [75,75]
+playersize = [50,50]
 
 screen = pygame.display.set_mode(size)
 bgColor = r,g,b = 0,0,0
