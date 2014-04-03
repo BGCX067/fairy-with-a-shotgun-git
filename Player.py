@@ -4,8 +4,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos = (0,0), blocksize = [50,50], screensize = [800,600]):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.screensize = screensize
-        self.upImages = [pygame.image.load("rsc/player/playerBall_up1.png"),
-                         pygame.image.load("rsc/player/playerBall_up2.png")]
+        self.upImages = [pygame.image.load("rsc/player/fairy.png"),
+                         pygame.image.load("rsc/player/fairy.png")]
         self.upImages = [pygame.transform.scale(self.upImages[0], blocksize),
                          pygame.transform.scale(self.upImages[1], blocksize)]
         self.downImages = [pygame.image.load("rsc/player/playerBall_down1.png"),
