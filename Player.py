@@ -5,19 +5,19 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.screensize = screensize
         self.upImages = [pygame.image.load("rsc/player/fairy.png"),
-                         pygame.image.load("rsc/player/fairy.png")]
+                         pygame.image.load("rsc/player/fairy 2.png")]
         self.upImages = [pygame.transform.scale(self.upImages[0], blocksize),
                          pygame.transform.scale(self.upImages[1], blocksize)]
-        self.downImages = [pygame.image.load("rsc/player/playerBall_down1.png"),
-                         pygame.image.load("rsc/player/playerBall_down2.png")]
+        self.downImages = [pygame.image.load("rsc/player/fairy.png"),
+                         pygame.image.load("rsc/player/fairy 2.png")]
         self.downImages = [pygame.transform.scale(self.downImages[0], blocksize),
                          pygame.transform.scale(self.downImages[1], blocksize)]
-        self.rightImages = [pygame.image.load("rsc/player/playerBall_right1.png"),
-                         pygame.image.load("rsc/player/playerBall_right2.png")]
+        self.rightImages = [pygame.image.load("rsc/player/fairy.png"),
+                         pygame.image.load("rsc/player/fairy 2.png")]
         self.rightImages = [pygame.transform.scale(self.rightImages[0], blocksize),
                          pygame.transform.scale(self.rightImages[1], blocksize)]
-        self.leftImages = [pygame.image.load("rsc/player/playerBall_left1.png"),
-                         pygame.image.load("rsc/player/playerBall_left2.png")]
+        self.leftImages = [pygame.image.load("rsc/player/fairy.png"),
+                         pygame.image.load("rsc/player/fairy 2.png")]
         self.leftImages = [pygame.transform.scale(self.leftImages[0], blocksize),
                          pygame.transform.scale(self.leftImages[1], blocksize)]
         self.images = self.rightImages
