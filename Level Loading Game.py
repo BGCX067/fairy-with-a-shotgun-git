@@ -76,6 +76,24 @@ def loadLevel(level):
                       [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
                       blocksize)
     
+            elif c == "w":
+                Block("rsc/blocks/wood.png", 
+                      [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
+                      blocksize)
+                      
+            elif c == "-":
+                HardBlock("rsc/blocks/grass.png", 
+                      [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
+                      blocksize)
+                      
+            elif c == "l":
+                Block("rsc/blocks/leaf.png", 
+                      [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
+                      blocksize)
+            
+    
+    
+    
     #f = open(level+".tng", 'r')
     #lines = f.readlines()
     #f.close()
