@@ -16,8 +16,8 @@ class Player(pygame.sprite.Sprite):
                          pygame.image.load("rsc/player/fairy 2.png")]
         self.rightImages = [pygame.transform.scale(self.rightImages[0], blocksize),
                          pygame.transform.scale(self.rightImages[1], blocksize)]
-        self.leftImages = [pygame.image.load("rsc/player/fairy.png"),
-                         pygame.image.load("rsc/player/fairy 2.png")]
+        self.leftImages = [pygame.image.load("rsc/player/fairy left.png"),
+                         pygame.image.load("rsc/player/fairy 2 left.png")]
         self.leftImages = [pygame.transform.scale(self.leftImages[0], blocksize),
                          pygame.transform.scale(self.leftImages[1], blocksize)]
         self.images = self.rightImages
