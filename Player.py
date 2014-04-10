@@ -5,21 +5,29 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.screensize = screensize
         self.upImages = [pygame.image.load("rsc/player/fairy.png"),
-                         pygame.image.load("rsc/player/fairy 2.png")]
+                         pygame.image.load("rsc/player/fairy 2.png"),
+                         pygame.image.load("rsc/player/fairy 3.png")]
         self.upImages = [pygame.transform.scale(self.upImages[0], blocksize),
-                         pygame.transform.scale(self.upImages[1], blocksize)]
+                         pygame.transform.scale(self.upImages[1], blocksize),
+                         pygame.transform.scale(self.upImages[2], blocksize)]
         self.downImages = [pygame.image.load("rsc/player/fairy.png"),
-                         pygame.image.load("rsc/player/fairy 2.png")]
+                         pygame.image.load("rsc/player/fairy 2.png"),
+                         pygame.image.load("rsc/player/fairy 3.png")]
         self.downImages = [pygame.transform.scale(self.downImages[0], blocksize),
-                         pygame.transform.scale(self.downImages[1], blocksize)]
+                         pygame.transform.scale(self.downImages[1], blocksize),
+                         pygame.transform.scale(self.downImages[2], blocksize)]
         self.rightImages = [pygame.image.load("rsc/player/fairy.png"),
-                         pygame.image.load("rsc/player/fairy 2.png")]
+                         pygame.image.load("rsc/player/fairy 2.png"),
+                         pygame.image.load("rsc/player/fairy 3.png")]
         self.rightImages = [pygame.transform.scale(self.rightImages[0], blocksize),
-                         pygame.transform.scale(self.rightImages[1], blocksize)]
+                         pygame.transform.scale(self.rightImages[1], blocksize),
+                         pygame.transform.scale(self.rightImages[2], blocksize)]
         self.leftImages = [pygame.image.load("rsc/player/fairy left.png"),
-                         pygame.image.load("rsc/player/fairy 2 left.png")]
+                         pygame.image.load("rsc/player/fairy 2 left.png"),
+                         pygame.image.load("rsc/player/fairy 3 left.png")]
         self.leftImages = [pygame.transform.scale(self.leftImages[0], blocksize),
-                         pygame.transform.scale(self.leftImages[1], blocksize)]
+                         pygame.transform.scale(self.leftImages[1], blocksize),
+                         pygame.transform.scale(self.leftImages[2], blocksize)]
         self.images = self.rightImages
         self.frame = 0
         self.maxFrame = len(self.images) - 1
