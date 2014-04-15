@@ -9,6 +9,7 @@ from Enemy import Enemy
 from Background import Background
 from Money import Money
 from HUD import CounterDisplay
+from Blast import Blast
 
 clock = pygame.time.Clock()
 
@@ -30,6 +31,7 @@ players = pygame.sprite.Group()
 all = pygame.sprite.OrderedUpdates()
 moneys = pygame.sprite.Group()
 HUDs = pygame.sprite.Group()
+projectiles = pygame.sprite.Group()
 
 Player.containers = (all, players)
 Block.containers = (all, blocks)
@@ -38,6 +40,7 @@ Enemy.containers = (all, enemies)
 Background.containers = (all, blocks)
 Money.containers = (all, moneys)
 CounterDisplay.containers = (all, HUDs)
+Blast.containers = (all, projectiles)
 
 bg = Background("rsc/bg/mainbg.png", size)
 
@@ -162,6 +165,8 @@ while True:
                 player1.direction("up")
             if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 player1.direction("down")
+            if event.key == pygame.K_SPACE:
+                Blast(player1.headingx, player1.rect.center)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 player1.direction("stop right")
