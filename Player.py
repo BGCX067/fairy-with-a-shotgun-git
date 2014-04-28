@@ -28,6 +28,10 @@ class Player(pygame.sprite.Sprite):
         self.leftImages = [pygame.transform.scale(self.leftImages[0], blocksize),
                          pygame.transform.scale(self.leftImages[1], blocksize),
                          pygame.transform.scale(self.leftImages[2], blocksize)]
+        #self.shootImages = [pygame.image.load("rsc/player/fairy shooting.png")]
+        #self.shootImages = [pygame.transform.scale(self.leftImages[0], blocksize)]
+        #self.leftshootImages = [pygame.image.load("rsc/player/fairy shooting left.png")]
+        #self.leftshootImages = [pygame.transform.scale(self.leftImages[0], blocksize)]
         self.images = self.rightImages
         self.frame = 0
         self.maxFrame = len(self.images) - 1
