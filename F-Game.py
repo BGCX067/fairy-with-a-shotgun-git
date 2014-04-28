@@ -10,6 +10,8 @@ from Background import Background
 from Money import Money
 from HUD import CounterDisplay
 from Blast import Blast
+from HealthBar import *
+
 
 clock = pygame.time.Clock()
 
@@ -41,6 +43,9 @@ Background.containers = (all, blocks)
 Money.containers = (all, moneys)
 CounterDisplay.containers = (all, HUDs)
 Blast.containers = (all, projectiles)
+HealthBar.containers = (all, HUDs)
+
+
 
 bg = Background("rsc/bg/mainbg.png", size)
 
@@ -128,23 +133,32 @@ def loadLevel(level):
      
     
 
+    
+    
 levels = ["rsc/levels/level1",
           "rsc/levels/level2"]
 level = 0
 loadLevel(levels[level])
 player1 = players.sprites()[0]
 moneycounter = CounterDisplay(player1.money, (20,height - 10))
+healthbar = HealthBar(player1, (50,50))
+player1.living = False
 
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                if level < len(levels)-1:
-                    level += 1
-                else:
-                    level = 0
+    while not player1.living:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    player.living = True
+                    if level < len(levels)-1:
+                        level += 1
+                    else:
+                        level = 0
+                    
+                    
+                    
                     
                 pm = player1.money
                     
@@ -156,6 +170,8 @@ while True:
                 player1 = players.sprites()[0]
                 player1.money = pm
                 moneycounter = CounterDisplay(player1.money, (20,height - 10))
+                healthbar = HealthBar(player1, (50,50))
+
 
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 player1.direction("right")

@@ -56,6 +56,9 @@ class Player(pygame.sprite.Sprite):
         self.living = True
         self.place(pos)
         self.money = 0
+        self.health = 100
+        self.healthTimer = 0
+        self.invincible = False
         
         
     def place(self, pos):
@@ -70,6 +73,14 @@ class Player(pygame.sprite.Sprite):
         self.animate()
         self.move()
         self.headingChanged = False
+        
+        def life(self):
+            self.health = 100
+        
+        def die(self):
+            self.health = 0
+        
+        
         
     def animate(self):
         if self.headingChanged:
