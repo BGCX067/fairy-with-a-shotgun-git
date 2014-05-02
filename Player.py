@@ -43,6 +43,10 @@ class Player(pygame.sprite.Sprite):
         self.speed = [0,0]
         self.speedx = 0
         self.speedy = 0
+        self.g = blocksize[0]/10
+        self.jumpSpeed = 0
+        self.jumpSpeedMax = 50
+        self.fallSpeedMax = int(blocksize[0]/2) -1
         self.realx = pos[0]
         self.realy = pos[1]
         self.x = screensize[0]/2
@@ -63,6 +67,9 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.healthTimer = 0
         self.invincible = False
+        self.onfloor = False
+        self.floor = screensize[1]
+        self.touchFloor = False
         
         
     def place(self, pos):
@@ -74,9 +81,13 @@ class Player(pygame.sprite.Sprite):
     def update(*args):
         self = args[0]
         self.collideWall(self.screensize)
+        if (self.rect.bottom < self.floor) and self.headingy == "none":
+            self.headingy = "down"
         self.animate()
         self.move()
         self.headingChanged = False
+        self.touchFloor = False
+        
         
         def life(self):
             self.health = 100
@@ -110,6 +121,17 @@ class Player(pygame.sprite.Sprite):
             
         
     def move(self):
+        self.realx += self.speedx
+        self.realy += self.speedy
+        
+        if not self.touchFloor:
+            self.headingy = "down"
+        if self.headingy == "down":
+            if self.speedy < self.fallSpeedMax:
+                self.speedy += self.g
+            else:
+                self.speedy = self.fallSpeedMax
+            
         self.realx += self.speedx
         self.realy += self.speedy
         
@@ -150,27 +172,32 @@ class Player(pygame.sprite.Sprite):
     
     def collideBlock(self, block):
         print self.rect, self.headingx, self.headingy
-        if self.realx < block.realx and self.headingx == "right":
+        if self.floor == block.rect.top + 2:
+            self.touchFloor = True
+        elif self.realx < block.realx and self.headingx == "right":
             self.speedx = 0
             self.realx -= 1
             self.x -= 1
             print "hit right"
-        if self.realx > block.realx and self.headingx == "left":
+        elif self.realx > block.realx and self.headingx == "left":
             self.speedx = 0
             self.realx += 1
             self.x += 1
             print "hit left"
-        if self.realy > block.realy and self.headingy == "up":
+        elif self.realy > block.realy and self.headingy == "up":
             self.speedy = 0
             self.realy += 1
             self.y += 1
             print "hit up"
-        if self.realy < block.realy and self.headingy == "down":
+        elif self.realy < block.realy and self.headingy == "down":
+            self.touchFloor = True
             self.speedy = 0
-            self.realy -= 1
-            self.y -= 1
-            print "hit down"
-   
+            self.realy -= self.g + 2
+            self.y = block.rect.top - self.rect.height/2 + 2
+            self.headingy = "none"
+            self.floor = block.rect.top+2
+            print "///////////////////////hit down"
+            
     def direction(self, dir):
         if dir == "right":
             self.headingx = "right"
