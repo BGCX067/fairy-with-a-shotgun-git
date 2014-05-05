@@ -145,7 +145,7 @@ healthbar = HealthBar(player1, (50,50))
 player1.living = False
 
 while True:
-    while not player1.living:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -155,79 +155,75 @@ while True:
                     if level < len(levels)-1:
                         level += 1
                     else:
-                        level = 0
-                    
-                    
-                    
-                    
-                pm = player1.money
-                    
-                for each in all.sprites():
-                    each.kill()
-                bg = Background("rsc/bg/mainbg.png", size)
-                screen.blit(bg.image, bg.rect)
-                loadLevel(levels[level])
-                player1 = players.sprites()[0]
-                player1.money = pm
-                moneycounter = CounterDisplay(player1.money, (20,height - 10))
-                healthbar = HealthBar(player1, (50,50))
+                        level = 0  
+                    pm = player1.money
+                        
+                    for each in all.sprites():
+                        each.kill()
+                    bg = Background("rsc/bg/mainbg.png", size)
+                    screen.blit(bg.image, bg.rect)
+                    loadLevel(levels[level])
+                    player1 = players.sprites()[0]
+                    player1.money = pm
+                    moneycounter = CounterDisplay(player1.money, (20,height - 10))
+                    healthbar = HealthBar(player1, (50,50))
 
 
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                player1.direction("right")
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                player1.direction("left")
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
-                player1.direction("up")
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                player1.direction("down")
-            if event.key == pygame.K_SPACE:
-                Blast(player1.headingx, player1.rect.center)
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                player1.direction("stop right")
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                player1.direction("stop left")
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
-                player1.direction("stop up")
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                player1.direction("stop down")
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    player1.direction("right")
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    player1.direction("left")
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    player1.direction("up")
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    player1.direction("down")
+                if event.key == pygame.K_SPACE:
+                    Blast(player1.headingx, player1.rect.center)
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    player1.direction("stop right")
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    player1.direction("stop left")
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    player1.direction("stop up")
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    player1.direction("stop down")
+                    
+        playersHitBlocks = pygame.sprite.groupcollide(players, hardBlocks, False, False)
+        enemiesHitBlocks = pygame.sprite.groupcollide(enemies, hardBlocks, False, False)
+        enemiesHitEnemies = pygame.sprite.groupcollide(enemies, enemies, False, False)
+        playersHitMoney = pygame.sprite.groupcollide(players, moneys, False, True)
+        
+        for player in playersHitBlocks:
+            for block in playersHitBlocks[player]:
+                player.collideBlock(block)
                 
-    playersHitBlocks = pygame.sprite.groupcollide(players, hardBlocks, False, False)
-    enemiesHitBlocks = pygame.sprite.groupcollide(enemies, hardBlocks, False, False)
-    enemiesHitEnemies = pygame.sprite.groupcollide(enemies, enemies, False, False)
-    playersHitMoney = pygame.sprite.groupcollide(players, moneys, False, True)
-    
-    for player in playersHitBlocks:
-        for block in playersHitBlocks[player]:
-            player.collideBlock(block)
-            
-    for enemy in enemiesHitBlocks:
-        for block in enemiesHitBlocks[enemy]:
-            enemy.collideBlock(block)
-            
-    for enemy in enemiesHitEnemies:
-        for otherEnemy in enemiesHitEnemies[enemy]:
-            enemy.collideBlock(otherEnemy)
-    
-    for player in playersHitMoney:
-        for money in playersHitMoney[player]:
-            player.collideMoney(money)
-            moneycounter.updateValue(player.money)
-    
-    
-    all.update(size,
-               player1.speedx, 
-               player1.speedy, 
-               player1.scrollingx, 
-               player1.scrollingy,
-               player1.realx,
-               player1.realy)
-    
-    dirty = all.draw(screen)
-    pygame.display.update(dirty)
-    pygame.display.flip()
-    clock.tick(30)
+        for enemy in enemiesHitBlocks:
+            for block in enemiesHitBlocks[enemy]:
+                enemy.collideBlock(block)
+                
+        for enemy in enemiesHitEnemies:
+            for otherEnemy in enemiesHitEnemies[enemy]:
+                enemy.collideBlock(otherEnemy)
+        
+        for player in playersHitMoney:
+            for money in playersHitMoney[player]:
+                player.collideMoney(money)
+                moneycounter.updateValue(player.money)
+        
+        
+        all.update(size,
+                   player1.speedx, 
+                   player1.speedy, 
+                   player1.scrollingx, 
+                   player1.scrollingy,
+                   player1.realx,
+                   player1.realy)
+        
+        dirty = all.draw(screen)
+        pygame.display.update(dirty)
+        pygame.display.flip()
+        clock.tick(30)
     
 
 
