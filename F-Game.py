@@ -95,7 +95,7 @@ def loadLevel(level):
                       blocksize)
                       
             elif c == "l":
-                Block("rsc/blocks/leaf.png", 
+                Block("rsc/blocks/Leaf.png", 
                       [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
                       blocksize)
             
