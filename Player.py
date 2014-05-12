@@ -174,31 +174,32 @@ class Player(pygame.sprite.Sprite):
         print self.rect, self.headingx, self.headingy
         if self.floor == block.rect.top + 2 and self.headingy == "none":
             self.touchFloor = True
+            print "on the floor"
             self.jumping = False
-            
-        elif self.realx < block.realx and self.headingx == "right":
-            self.speedx = 0
-            self.realx -= 1
-            self.x -= 1
-            print "hit right"
-        elif self.realx > block.realx and self.headingx == "left":
-            self.speedx = 0
-            self.realx += 1
-            self.x += 1
-            print "hit left"
-        elif self.realy > block.realy and self.headingy == "up":
-            self.speedy = 0
-            self.realy += 1
-            self.y += 1
-            print "hit up"
-        elif self.realy < block.realy and self.headingy == "down":
-            self.touchFloor = True
-            self.speedy = 0
-            self.realy -= self.g + 2
-            self.y = block.rect.top - self.rect.height/2 + 2
-            self.headingy = "none"
-            self.floor = block.rect.top+2
-            print "///////////////////////hit down"
+        else:
+            if self.realx < block.realx and self.headingx == "right":
+                self.speedx = 0
+                self.realx -= 1
+                self.x -= 1
+                print "hit right"
+            if self.realx > block.realx and self.headingx == "left":
+                self.speedx = 0
+                self.realx += 1
+                self.x += 1
+                print "hit left"
+            if self.realy < block.realy and self.headingy == "up":
+                self.speedy = 0
+                self.realy += 1
+                self.y += 1
+                print "hit up"
+            if self.realy > block.realy and self.headingy == "down":
+                self.touchFloor = True
+                self.speedy = 0
+                self.realy -= self.g + 2
+                self.headingy = "none"
+                self.floor = block.rect.top+2
+                self.y = self.floor - self.rect.height/2
+                print "///////////////////////hit down"
             
     def direction(self, dir):
         if dir == "right":
