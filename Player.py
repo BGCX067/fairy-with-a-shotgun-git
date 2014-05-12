@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         self.g = blocksize[0]/10
         self.jumpSpeed = 0
         self.jumpSpeedMax = 50
-        self.fallSpeedMax = int(blocksize[0]/2) -1
+        self.fallSpeedMax = int(blocksize[0]/2) -2
         self.realx = pos[0]
         self.realy = pos[1]
         self.x = screensize[0]/2
@@ -172,8 +172,10 @@ class Player(pygame.sprite.Sprite):
     
     def collideBlock(self, block):
         print self.rect, self.headingx, self.headingy
-        if self.floor == block.rect.top + 2:
+        if self.floor == block.rect.top + 2 and self.headingy == "none":
             self.touchFloor = True
+            self.jumping = False
+            
         elif self.realx < block.realx and self.headingx == "right":
             self.speedx = 0
             self.realx -= 1
@@ -215,6 +217,14 @@ class Player(pygame.sprite.Sprite):
         if dir == "stop left":
             self.headingx = "left"
             self.speedx = 0
+        if dir == "jump":
+            if not self.jumping:
+                self.jumping = True
+                self.headingy = "up"
+                self.jumpSpeed = self.jumpSpeedMax
+                self.speedy = -self.jumpSpeed
+                self.headingChanged = True
+                self.touchingFloor = False
         if dir == "up":
             self.headingy = "up"
             self.speedy = -self.maxSpeed

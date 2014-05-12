@@ -3,9 +3,10 @@ import pygame, sys, math, random
 from Block import Block
 
 class Enemy(Block):
-    def __init__(self, image, pos = (0,0), blocksize = [50,50]):
+    def __init__(self, image, pos = (0,0), blocksize = [50,50], screensize = [800,600]):
         Block.__init__(self, image, pos, blocksize)
         self.maxSpeed = blocksize[0]/14.0
+        self.screensize = screensize
         self.living = True
         self.detectRange = 100
         self.seePlayer = False
@@ -14,10 +15,19 @@ class Enemy(Block):
         self.directionCount = 0
         self.realx = pos[0]
         self.realy = pos[1]
+        self.x = screensize[0]/2
+        self.y = screensize[1]/2
         self.x = pos[0]
         self.y = pos[1]
+        self.g = blocksize[0]/10
         self.offsetx = 0
         self.offsety = 0
+        self.jumpSpeed = 0
+        self.jumpSpeedMax = 50
+        self.fallSpeedMax = int(blocksize[0]/2) -2
+        self.onfloor = False
+        self.floor = screensize[1]
+        self.touchFloor = False
         
     def fixLocation(self, x, y):
         self.offsetx += x
@@ -31,9 +41,14 @@ class Enemy(Block):
         self.scrollingy = args[5]
         playerx = args[6]
         playery = args[7]
-        print "enemy:", self.realx, self.realy, "player:", playerx, playery
         self.move()
         self.detectPlayer(playerx, playery)
+        self.collideWall(self.screensize)
+        
+        if (self.rect.bottom < self.floor) and self.headingy == "none":
+            self.headingy = "down"
+        self.headingChanged = False
+        self.touchFloor = False
         if not self.seePlayer:
             self.ai()
         
@@ -59,6 +74,21 @@ class Enemy(Block):
             
     def move(self):
         #print "enemy", self.realx, self.speedx
+        self.realx += self.speedx
+        self.realy += self.speedy
+        
+        if not self.touchFloor:
+            self.headingy = "down"
+        if self.headingy == "down":
+            if self.speedy < self.fallSpeedMax:
+                self.speedy += self.g
+            else:
+                self.speedy = self.fallSpeedMax
+                
+        self.realx += self.speedx
+        self.realy += self.speedy
+        
+        
         if self.headingx == "right":
             self.realx += self.speedx
         else:
@@ -77,6 +107,16 @@ class Enemy(Block):
         self.y = self.realy + self.offsety
             
         self.rect.center = (round(self.x), round(self.y))
+        
+    def collideWall(self, size):
+        if self.rect.left < 0 and self.headingx == "left":
+            self.speedx = 0
+        elif self.rect.right > size[0] and self.headingx == "right":
+            self.speedx = 0
+        if self.rect.top < 0 and self.headingy == "up":
+            self.speedy = 0
+        elif self.rect.bottom > size[1] and self.headingy == "down":
+            self.speedy = 0
             
     def ai(self):
         if self.directionCount > 0:
@@ -85,22 +125,67 @@ class Enemy(Block):
             self.directionCount = random.randint(10,100)
             dir = random.randint(0,3);
             if dir == 0:
-                self.headingx = "right"
-                self.headingy = "up"
+                self.direction("right")
             if dir == 1:
-                self.headingx = "right"
-                self.headingy = "down"
+                self.direction("stop right")
             if dir == 2:
-                self.headingx = "left"
-                self.headingy = "down"
+                self.direction("left")
             if dir == 3:
-                self.headingx = "left"
-                self.headingy = "up"
+                self.direction("stop left")
+            if dir == 4:
+                self.direction("jump")
             self.speedx = random.randint(0, int(self.maxSpeed))
             self.speedy = random.randint(0, int(self.maxSpeed))
+            
+            
+    def direction(self, dir):
+        if dir == "right":
+            self.headingx = "right"
+            self.speedx = self.maxSpeed
+            self.lastHeading = "right"
+            self.headingChanged = True
+        if dir == "stop right":
+            self.headingx = "right"
+            self.speedx = 0
+        if dir == "left":
+            self.headingx = "left"
+            self.speedx = -self.maxSpeed
+            self.lastHeading = "left"
+            self.headingChanged = True
+        if dir == "stop left":
+            self.headingx = "left"
+            self.speedx = 0
+        if dir == "jump":
+            if not self.jumping:
+                self.jumping = True
+                self.headingy = "up"
+                self.jumpSpeed = self.jumpSpeedMax
+                self.speedy = -self.jumpSpeed
+                self.headingChanged = True
+                self.touchingFloor = False
+        if dir == "up":
+            self.headingy = "up"
+            self.speedy = -self.maxSpeed
+            self.lastHeading = "up"
+            self.headingChanged = True
+        if dir == "stop up":
+            self.headingy = "up"
+            self.speedy = 0
+        if dir == "down":
+            self.headingy = "down"
+            self.speedy = self.maxSpeed
+            self.lastHeading = "down"
+            self.headingChanged = True
+        if dir == "stop down":
+            self.headingy = "down"
+            self.speedy = 0
       
     def collideBlock(self, block):
         #print self.rect, self.headingx, self.headingy
+        if self.floor == block.rect.top + 2 and self.headingy == "none":
+            self.touchFloor = True
+            self.jumping = False
+            
         if self.realx < block.realx and self.headingx == "right":
             self.speedx = 0
             self.realx -= 1
@@ -125,6 +210,8 @@ class Enemy(Block):
             self.y -= 1
             print "hit down"
             self.directionCount = 0
+            
+    
             
             
     def distanceToPoint(self, pt):

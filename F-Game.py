@@ -174,7 +174,7 @@ while True:
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     player1.direction("left")
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
-                    player1.direction("up")
+                    player1.direction("jump")
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     player1.direction("down")
                 if event.key == pygame.K_SPACE:
