@@ -171,27 +171,26 @@ class Player(pygame.sprite.Sprite):
     
     
     def collideBlock(self, block):
-        print self.rect, self.headingx, self.headingy
+        #print self.rect, self.headingx, self.headingy
         if self.floor == block.rect.top + 2 and self.headingy == "none":
             self.touchFloor = True
-            print "on the floor"
             self.jumping = False
         else:
             if self.realx < block.realx and self.headingx == "right":
                 self.speedx = 0
                 self.realx -= 1
                 self.x -= 1
-                print "hit right"
+                #print "hit right"
             if self.realx > block.realx and self.headingx == "left":
                 self.speedx = 0
                 self.realx += 1
                 self.x += 1
-                print "hit left"
+                #print "hit left"
             if self.realy < block.realy and self.headingy == "up":
                 self.speedy = 0
                 self.realy += 1
                 self.y += 1
-                print "hit up"
+                #print "hit up"
             if self.realy > block.realy and self.headingy == "down":
                 self.touchFloor = True
                 self.speedy = 0
@@ -199,7 +198,7 @@ class Player(pygame.sprite.Sprite):
                 self.headingy = "none"
                 self.floor = block.rect.top+2
                 self.y = self.floor - self.rect.height/2
-                print "///////////////////////hit down"
+                #print "///////////////////////hit down"
             
     def direction(self, dir):
         if dir == "right":

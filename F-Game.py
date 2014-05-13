@@ -202,9 +202,9 @@ while True:
             for block in enemiesHitBlocks[enemy]:
                 enemy.collideBlock(block)
                 
-        for enemy in enemiesHitEnemies:
-            for otherEnemy in enemiesHitEnemies[enemy]:
-                enemy.collideBlock(otherEnemy)
+        #for enemy in enemiesHitEnemies:
+            #for otherEnemy in enemiesHitEnemies[enemy]:
+                #enemy.collideBlock(otherEnemy)
         
         for player in playersHitMoney:
             for money in playersHitMoney[player]:

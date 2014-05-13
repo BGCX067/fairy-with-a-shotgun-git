@@ -1,4 +1,4 @@
-import pygame, sys, math, random
+import pygame, sys, math, random, time
 
 from Block import Block
 
@@ -11,7 +11,7 @@ class Enemy(Block):
         self.detectRange = 100
         self.seePlayer = False
         self.headingx = "right"
-        self.headingy = "up"
+        self.headingy = "none"
         self.directionCount = 0
         self.realx = pos[0]
         self.realy = pos[1]
@@ -28,6 +28,7 @@ class Enemy(Block):
         self.onfloor = False
         self.floor = screensize[1]
         self.touchFloor = False
+        self.turn = 0
         
     def fixLocation(self, x, y):
         self.offsetx += x
@@ -51,11 +52,12 @@ class Enemy(Block):
         self.touchFloor = False
         if not self.seePlayer:
             self.ai()
+        self.turn += 1
         
         
     def detectPlayer(self, playerx, playery):
         if self.distanceToPoint([playerx, playery]) < self.detectRange:
-            print "I seeeee you!!!"
+            #print "I seeeee you!!!"
             self.seePlayer = True
             self.speedx = self.maxSpeed
             self.speedy = self.maxSpeed
@@ -70,7 +72,7 @@ class Enemy(Block):
                 self.headingy = "up"
         else:
             self.seePlayer = False
-            print "Where are you?"
+            #print "Where are you?"
             
     def move(self):
         #print "enemy", self.realx, self.speedx
@@ -181,35 +183,37 @@ class Enemy(Block):
             self.speedy = 0
       
     def collideBlock(self, block):
-        #print self.rect, self.headingx, self.headingy
+        #time.sleep(.5)
+        print self.rect, self.headingx, self.headingy, block.rect, block.realx, block.realy
         if self.floor == block.rect.top + 2 and self.headingy == "none":
             self.touchFloor = True
             self.jumping = False
+        else:
+            if self.realx < block.realx and self.headingx == "right":
+                self.speedx = 0
+                self.realx -= 1
+                self.x -= 1
+                print "hit right"
+            if self.realx > block.realx and self.headingx == "left":
+                self.speedx = 0
+                self.realx += 1
+                self.x += 1
+                print "hit left"
+            if self.realy > block.realy and self.headingy == "up":
+                self.speedy = 0
+                self.realy += 1
+                self.y += 1
+                print "hit up"
+            print "\n",self.turn, self.realy, block.realy, self.realy > block.realy, self.headingy, self.headingy == "down","\n"
+            if self.realy < block.realy and self.headingy == "down":
+                self.touchFloor = True
+                self.speedy = 0
+                self.realy -= self.g + 2
+                self.headingy = "none"
+                self.floor = block.rect.top+2
+                self.y = self.floor - self.rect.height/2
+                print "///////////////////////hit down"
             
-        if self.realx < block.realx and self.headingx == "right":
-            self.speedx = 0
-            self.realx -= 1
-            self.x -= 1
-            print "hit right"
-            self.directionCount = 0
-        if self.realx > block.realx and self.headingx == "left":
-            self.speedx = 0
-            self.realx += 1
-            self.x += 1
-            print "hit left"
-            self.directionCount = 0
-        if self.realy > block.realy and self.headingy == "up":
-            self.speedy = 0
-            self.realy += 1
-            self.y += 1
-            print "hit up"
-            self.directionCount = 0
-        if self.realy < block.realy and self.headingy == "down":
-            self.speedy = 0
-            self.realy -= 1
-            self.y -= 1
-            print "hit down"
-            self.directionCount = 0
             
     
             
