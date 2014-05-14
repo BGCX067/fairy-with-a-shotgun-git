@@ -101,8 +101,8 @@ class Enemy(Block):
             self.realy -= self.speedy
             
         if self.scrollingx:
-            self.offsetx -= self.playerspeedx
         if self.scrollingy:
+            self.offsetx -= self.playerspeedx
             self.offsety -=  self.playerspeedy
         
         self.x = self.realx + self.offsetx
@@ -125,8 +125,8 @@ class Enemy(Block):
             self.directionCount -= 1
         else:
             self.directionCount = random.randint(10,100)
-            dir = random.randint(0,3);
-            if dir == 0:
+            dir = random.randint(0,3)
+            if dir == 0:  
                 self.direction("right")
             if dir == 1:
                 self.direction("stop right")
