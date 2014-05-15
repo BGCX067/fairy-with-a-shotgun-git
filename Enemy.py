@@ -101,8 +101,9 @@ class Enemy(Block):
             self.realy -= self.speedy
             
         if self.scrollingx:
-        if self.scrollingy:
             self.offsetx -= self.playerspeedx
+        
+        if self.scrollingy:
             self.offsety -=  self.playerspeedy
         
         self.x = self.realx + self.offsetx

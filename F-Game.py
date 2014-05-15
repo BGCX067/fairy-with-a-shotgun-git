@@ -168,6 +168,7 @@ while True:
                     moneycounter = CounterDisplay(player1.money, (20,height - 10))
                     healthbar = HealthBar(player1, (50,50))
 
+                    
 
                 if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     player1.direction("right")
