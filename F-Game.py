@@ -46,6 +46,11 @@ Blast.containers = (all, projectiles)
 HealthBar.containers = (all, HUDs)
 
 
+#CURSOR = pygame.cursor.load_xbm("rsc/CURSORS/CursorM1.xbm")
+
+#cursor = pygame.cursors.compile(CURSOR)
+#pygame.mouse.set_cursor((24,24),(12,12),cursor[0],cursor[1])
+
 
 bg = Background("rsc/bg/mainbg.png", size)
 
