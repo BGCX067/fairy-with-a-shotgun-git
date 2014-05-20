@@ -14,10 +14,10 @@ from HealthBar import *
 
 
 clock = pygame.time.Clock()
-
 width = 800
 height = 600
 size = width, height
+fullscreen = 0
 
 blocksize = [75,75]
 playersize = [100,100]
@@ -125,7 +125,7 @@ def loadLevel(level):
                      playersize,
                      size)
             elif c == "e":
-                Enemy("rsc/enemy/red guy.png", 
+                Enemy("rsc/enemy/slime 1.png", 
                       [(x*blocksize[0])+blocksize[0]/2, (y*blocksize[1])+blocksize[1]/2], 
                       playersize)
     for each in all.sprites():
@@ -151,6 +151,15 @@ while True:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
+                    start = True
+                if (event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT):
+                    if fullscreen == 0:
+                        fullscreen = pygame.FULLSCREEN
+                    else:
+                        fullscreen = 0
+                    screen = pygame.display.set_mode((width,height),fullscreen)
+                    pygame.display.flip()
+                if event.key == pygame.K_RETURN:
                     player.living = True
                     if level < len(levels)-1:
                         level += 1
@@ -167,8 +176,6 @@ while True:
                     player1.money = pm
                     moneycounter = CounterDisplay(player1.money, (20,height - 10))
                     healthbar = HealthBar(player1, (50,50))
-
-                    
 
                 if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     player1.direction("right")
