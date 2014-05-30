@@ -53,9 +53,9 @@ class Player(pygame.sprite.Sprite):
         self.y = screensize[1]/2
         self.offsetx = self.x - self.realx
         self.offsety = self.y - self.realy
-        self.scrollingx = False
-        self.scrollingy = False
-        self.scrollBoundry = 200
+        self.scrollingx = True
+        self.scrollingy = True
+        self.scrollBoundry = 100
         self.headingx = "right"
         self.headingy = "up"
         self.lastHeading = "right"
@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.healthTimer = 0
         self.invincible = False
-        self.onfloor = False
+        #self.onfloor = False
         self.floor = screensize[1]
         self.touchFloor = False
         
@@ -89,11 +89,11 @@ class Player(pygame.sprite.Sprite):
         self.touchFloor = False
         
         
-        def life(self):
-            self.health = 100
-        
-        def die(self):
-            self.health = 0
+    def life(self):
+        self.health = 100
+    
+    def die(self):
+        self.health = 0
         
         
         
@@ -109,6 +109,10 @@ class Player(pygame.sprite.Sprite):
                 self.images = self.leftImages
             self.image = self.images[self.frame]
         
+        self.image = self.images[self.frame]
+        self.rect = self.image.get_rect(center = self.rect.center)
+        self.maxFrame = len(self.images) - 1
+        
         if self.waitCount < self.waitCountMax:
             self.waitCount += 1
         else:
@@ -121,9 +125,7 @@ class Player(pygame.sprite.Sprite):
             
         
     def move(self):
-        self.realx += self.speedx
-        self.realy += self.speedy
-        
+    
         if not self.touchFloor:
             self.headingy = "down"
         if self.headingy == "down":
@@ -135,23 +137,23 @@ class Player(pygame.sprite.Sprite):
         self.realx += self.speedx
         self.realy += self.speedy
         
-        if not self.scrollingx:
-            self.x += self.speedx
-        if self.x > self.screensize[0] - self.scrollBoundry and self.headingx == "right":
-            self.scrollingx = True
-        elif self.x < self.scrollBoundry and self.headingx == "left":
-            self.scrollingx = True
-        else:
-            self.scrollingx = False
+        #if not self.scrollingx:
+            #self.x += self.speedx
+        #if self.x > self.screensize[0] - self.scrollBoundry and self.headingx == "right":
+            #self.scrollingx = True
+        #elif self.x < self.scrollBoundry and self.headingx == "left":
+            #self.scrollingx = True
+        #else:
+            #self.scrollingx = False
             
-        if not self.scrollingy:
-            self.y += self.speedy
-        if self.y > self.screensize[1] - self.scrollBoundry and self.headingy == "down":
-            self.scrollingy = True
-        elif self.y < self.scrollBoundry and self.headingy == "up":
-            self.scrollingy = True
-        else:
-            self.scrollingy = False
+        #if not self.scrollingy:
+            #self.y += self.speedy
+        #if self.y > self.screensize[1] - self.scrollBoundry and self.headingy == "down":
+            #self.scrollingy = True
+        #elif self.y < self.scrollBoundry and self.headingy == "up":
+            #self.scrollingy = True
+        #else:
+            #self.scrollingy = False
             
         self.rect.center = (round(self.x), round(self.y))
         
@@ -199,7 +201,54 @@ class Player(pygame.sprite.Sprite):
                 self.floor = block.rect.top+2
                 self.y = self.floor - self.rect.height/2
                 #print "///////////////////////hit down"
+    
+    def collideBlock(self, block):
+        #time.sleep(.25)
+        #print self.rect, self.headingx, self.headingy
+        if self.floor == block.rect.top + 2 and self.headingy == "none":
+            self.touchFloor = True
+            self.jumping = False
+        else:
+            #print self.realx, block.realx, self.headingxa
+            if self.realy > block.realy - (25 + self.rect.height/2) and self.headingy == "down":
+                #self.speedy = 0height
+                #self.realy -= 1
+                #self.y -= 1
+                
+                self.speedy = 0
+                
+                self.realy -= self.g
+                #self.y -= self.g + 2
+                #self.realy = block.rect.top - self.rect.height/2 + 2
+                #self.realy = block.rect.top - self.rect.height/2 + 2
+                #print newy, self.y, self.realy, self.realy + newy - self.y
+                #time.sleep(.5)
+                 
+                #self.y = newy
+                
+                
+                self.headingy = "none"
+                self.floor = block.rect.top+2
+                self.touchFloor = True
+                #print "hit down" 
+                return
             
+            if self.realx < block.realx and self.headingx == "right":
+                self.speedx = 0
+                self.realx -= 1
+                #self.x -= 1
+                print "hit right"
+            if self.realx > block.realx and self.headingx == "left":
+                self.speedx = 0
+                self.realx += 1
+                #self.x += 1
+                print "hit left"
+            if self.realy < block.realy and self.headingy == "up":
+                self.speedy = 0
+                self.realy += 1
+                #self.y += 1
+                print "hit up"    
+                
     def direction(self, dir):
         if dir == "right":
             self.headingx = "right"
@@ -241,3 +290,9 @@ class Player(pygame.sprite.Sprite):
         if dir == "stop down":
             self.headingy = "down"
             self.speedy = 0
+
+    def jump(self):
+         if not self.jumping:
+            self.speedy = -30
+            self.jumping = True
+            self.touchFloor = False
