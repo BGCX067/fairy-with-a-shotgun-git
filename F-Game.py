@@ -20,7 +20,7 @@ size = width, height
 fullscreen = 0
 
 blocksize = [75,75]
-playersize = [100,100]
+playersize = [77,90]
 
 screen = pygame.display.set_mode(size)
 bgColor = r,g,b = 0,0,0

@@ -15,11 +15,11 @@ class Blast(pygame.sprite.Sprite):
         self.realy = pos[1]
         if self.headingx == "left":
             self.baseImage = pygame.transform.flip(self.baseImage, 1, 0)
-            self.realx -= 21
-            self.realy -= 9
+            self.realx -= 20
+            self.realy -= 6
         else:
-            self.realx += 21
-            self.realy -= 9
+            self.realx += 20
+            self.realy -= 6
         self.image = pygame.transform.scale(self.baseImage, self.size)
         self.rect = self.image.get_rect()
         self.place([self.realx, self.realy])
