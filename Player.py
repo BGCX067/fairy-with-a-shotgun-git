@@ -44,6 +44,7 @@ class Player(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.g = blocksize[0]/10
+        self.jumping = False
         self.jumpSpeed = 0
         self.jumpSpeedMax = 50
         self.fallSpeedMax = int(blocksize[0]/2) -2
@@ -70,6 +71,8 @@ class Player(pygame.sprite.Sprite):
         #self.onfloor = False
         self.floor = screensize[1]
         self.touchFloor = False
+        self.jumpCounter = 0
+        self.jumpCounterMax = 30
         
         
     def place(self, pos):
@@ -80,6 +83,11 @@ class Player(pygame.sprite.Sprite):
         
     def update(*args):
         self = args[0]
+        if self.jumpCounter > 1:
+            self.jumpCounter -= 1
+        elif self.jumpCounter == 1:
+            self.stop_jump()
+            
         self.collideWall(self.screensize)
         if (self.rect.bottom < self.floor) and self.headingy == "none":
             self.headingy = "down"
@@ -87,15 +95,13 @@ class Player(pygame.sprite.Sprite):
         self.move()
         self.headingChanged = False
         self.touchFloor = False
-        
+        print self.jumping
         
     def life(self):
         self.health = 100
     
     def die(self):
-        self.health = 0
-        
-        
+        self.health = 0   
         
     def animate(self):
         if self.headingChanged:
@@ -122,13 +128,12 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.frame = 0
             self.image = self.images[self.frame]
-            
-        
+              
     def move(self):
     
-        if not self.touchFloor:
+        if not self.touchFloor and not self.jumping:
             self.headingy = "down"
-        if self.headingy == "down":
+        if self.headingy == "down" and not self.jumping:
             if self.speedy < self.fallSpeedMax:
                 self.speedy += self.g
             else:
@@ -169,8 +174,6 @@ class Player(pygame.sprite.Sprite):
     
     def collideMoney(self, money):
         self.money += money.value
-    
-    
     
     def collideBlock(self, block):
         #print self.rect, self.headingx, self.headingy
@@ -294,5 +297,14 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
          if not self.jumping:
             self.speedy = -30
+            self.jumpCounter = self.jumpCounterMax
             self.jumping = True
+            self.touchFloor = False
+            self.floor = self.screensize[1]
+    
+    def stop_jump(self):
+         if self.jumping:
+            self.speedy = 0
+            self.jumpCounter = 0
+            self.jumping = False
             self.touchFloor = False

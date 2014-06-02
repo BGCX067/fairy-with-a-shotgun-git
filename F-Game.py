@@ -197,8 +197,8 @@ while True:
                     player1.direction("stop right")
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     player1.direction("stop left")
-                # if event.key == pygame.K_w or event.key == pygame.K_UP:
-                    # player1.direction("stop up")
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    player1.stop_jump()
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     player1.direction("stop down")
                     
